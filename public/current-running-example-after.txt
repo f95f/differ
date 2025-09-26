@@ -1,0 +1,141 @@
+SAO-EDGE-RTR-01#show running-config
+Building configuration...
+
+Current configuration : 6841 bytes
+!
+! Last configuration change at 04:58:12 UTC Fri Sep 26 2025 by admin
+!
+version 17.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname SAO-EDGE-RTR-01
+!
+boot-start-marker
+boot-end-marker
+!
+!
+username admin privilege 15 secret 5 $1$mR.7$tHjL5kI9bN.j9d.eR3gI1.
+username readonly privilege 1 secret 5 $1$oPqR$sTuVwXyZaBcDeFgHiJkL2/
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local
+!
+!
+ip domain name internal.corp.local
+ip name-server 8.8.8.8 8.8.4.4
+!
+!
+!
+ip dhcp excluded-address 192.168.15.1 192.168.15.10
+!
+ip dhcp pool LAN_USERS
+ network 192.168.15.0 255.255.255.0
+ default-router 192.168.15.1
+ dns-server 8.8.8.8
+ domain-name internal.corp.local
+ lease 7
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+interface Loopback0
+ description Management and Router-ID Interface
+ ip address 10.0.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0/0
+ description WAN Link to ISP
+ ip address 203.0.113.2 255.255.255.252
+ ip nat outside
+ negotiation auto
+ service-policy output QOS-POLICY
+!
+interface GigabitEthernet0/0/1
+ description LAN User Segment
+ ip address 192.168.15.1 255.255.255.0
+ ip nat inside
+ ip access-group INBOUND-FILTER in
+ negotiation auto
+!
+interface GigabitEthernet0/0/2
+ description GUEST-WIFI Segment
+ ip address 192.168.25.1 255.255.255.0
+ ip nat inside
+ negotiation auto
+!
+!
+router ospf 100
+ router-id 10.0.0.1
+ network 10.0.0.1 0.0.0.0 area 0
+ network 192.168.15.0 0.0.0.255 area 0
+ network 192.168.25.0 0.0.0.255 area 0
+!
+ip forward-protocol nd
+!
+!
+ip http server
+ip http secure-server
+!
+ip nat inside source list NAT-ACL interface GigabitEthernet0/0/0 overload
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+!
+ip access-list extended INBOUND-FILTER
+ 10 permit tcp any host 192.168.15.50 eq 80
+ 15 permit icmp any any echo-reply
+ 20 deny ip any 192.168.20.0 0.0.0.255
+ 30 permit ip any any
+!
+ip access-list standard NAT-ACL
+ 10 permit 192.168.15.0 0.0.0.255
+ 20 permit 192.168.25.0 0.0.0.255
+!
+!
+class-map match-any VOIP
+ match ip dscp ef
+!
+policy-map QOS-POLICY
+ class VOIP
+  priority percent 30
+ class class-default
+  fair-queue
+!
+!
+snmp-server community CorpSNMPv2-RO RO
+snmp-server location "Sao Paulo Data Center - Rack 5"
+snmp-server contact "Network Ops - noc@corp.local"
+!
+logging host 192.168.50.100 transport udp port 514
+logging trap informational
+!
+ntp server pool.ntp.br
+!
+!
+banner motd ^
+******************************************************************
+* This is a private system owned by CORP. Unauthorized access   *
+* is strictly prohibited and will be prosecuted to the full      *
+* extent of the law. All activity is logged.                     *
+* Disconnect immediately if you are not an authorized user.      *
+******************************************************************
+^
+!
+line con 0
+ exec-timeout 15 0
+ logging synchronous
+ login authentication default
+ transport input none
+line vty 0 4
+ exec-timeout 15 0
+ logging synchronous
+ login authentication default
+ transport input ssh
+!
+end
+
+SAO-EDGE-RTR-01#

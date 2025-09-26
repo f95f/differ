@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+:root {
+    --base: #3498db;
+    --base-dark: #2980b9;
+
+    --grey-light: #f3f3f3;
+    --grey: #bdc3c7;
+    --grey-dark: #7f8c8d;
+    --grey-darker: #314860;
+
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all .2s;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.debug {
+    outline: 1px dashed lime;
+}
+

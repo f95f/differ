@@ -1,13 +1,20 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, NgZone, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DiffEditorModel, MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { debounceTime, Subject } from 'rxjs';
 
+interface IDiffEditorModel {
+  language: string;
+  code: string;
+  length: number;
+}
+
 @Component({
   selector: 'app-differ',
   imports: [
     MonacoEditorModule,
-    FormsModule 
+    FormsModule,
   ],
   templateUrl: './differ.html',
   styleUrl: './differ.scss'
@@ -18,27 +25,21 @@ export class Differ {
   diffEditorComponent: any;
 
   private ngZone = inject(NgZone);
+  private client = inject(HttpClient);
+
   private update$ = new Subject<void>();
   private destroy$ = new Subject<void>();
 
-  originalModel: DiffEditorModel = {
+  originalModel: IDiffEditorModel = {
     language: 'plaintext',
-    code: `hostname R1
-      !
-      interface GigabitEthernet0/1
-      description Uplink to Switch
-      ip address 10.0.0.1 255.255.255.0
-      !`
+    code: '',
+    length: 0
   };
 
-  modifiedModel: DiffEditorModel = {
+  modifiedModel: IDiffEditorModel = {
     language: 'plaintext',
-    code: `hostname R1
-      !
-      interface GigabitEthernet0/1
-      description Uplink to Core
-      ip address 10.0.0.2 255.255.255.0
-      !`
+    code: '',
+    length: 0
   };
 
   diffOptions: any = {
@@ -58,17 +59,16 @@ export class Differ {
     this.update$.pipe(debounceTime(240)).subscribe(() => {
       this.applyModelsToEditor();
     });
-  }
-
-  
-// called from the template textareas
-  onOriginalInput(value: string) {
-    this.originalModel = { ...this.originalModel, code: value };
-    this.update$.next();
-  }
-  onModifiedInput(value: string) {
-    this.modifiedModel = { ...this.modifiedModel, code: value };
-    this.update$.next();
+    this.client.get('/current-running-example-before.txt', { responseType: 'text' })
+    .subscribe(data => {
+      this.originalModel = { ...this.originalModel, code: data, length: data.length };
+      this.update$.next();
+    });
+    this.client.get('/current-running-example-after.txt', { responseType: 'text' })
+    .subscribe(data => {
+      this.modifiedModel = { ...this.modifiedModel, code: data, length: data.length };
+      this.update$.next();
+    });
   }
 
   // convenience API to inject text programmatically
@@ -80,6 +80,7 @@ export class Differ {
     this.modifiedModel = { ...this.modifiedModel, code: text };
     this.update$.next();
   }
+
 
   // sync the wrapper-bound models into the actual Monaco diff editor
   applyModelsToEditor() {

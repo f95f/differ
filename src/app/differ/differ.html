@@ -1,5 +1,5 @@
 <div class="diff-page">
-  <div class="inputs-row">
+  <!-- <div class="inputs-row">
     <div class="input-col">
       <label>Left (original)</label>
       <textarea
@@ -21,14 +21,41 @@
       <button (click)="setModifiedText('')">Clear Right</button>
       <button (click)="applyModelsToEditor()">Force update</button>
     </div>
+  </div> -->
+
+  <div class="tools debug">
+    <div class="left">
+        <h2>
+            <span class="material-symbols-outlined light">code_off</span>
+            Sample A
+        </h2>
+        <span class="length light">
+            {{ originalModel.length }} characters
+        </span>
+        <button (click)="setOriginalText('')">
+            <span class="material-symbols-outlined light">clear_all</span>
+            <span class="button-description">Clear this side</span>
+        </button>
+    </div>
+    <div class="right">
+        <h2>
+            <span class="material-symbols-outlined light">code_off</span>
+            Sample B
+        </h2>
+        <span class="length light">
+            {{ modifiedModel.length }} characters
+        </span>
+        <button (click)="setModifiedText('')">
+            <span class="material-symbols-outlined light">clear_all</span>
+            <span class="button-description">Clear this side</span>
+        </button>
+    </div>
   </div>
 
-  <!-- ngx-monaco-diff-editor wrapper (single widget showing two panes) -->
   <ngx-monaco-diff-editor
     #diffEditor
     [options]="diffOptions"
     [originalModel]="originalModel"
-    [modifiedModel]="modifiedModel"
-    style="height: calc(100vh - 240px); display:block;">
+    [modifiedModel]="modifiedModel">
   </ngx-monaco-diff-editor>
 </div>
