@@ -1,1 +1,34 @@
-<p>differ works!</p>
+<div class="diff-page">
+  <div class="inputs-row">
+    <div class="input-col">
+      <label>Left (original)</label>
+      <textarea
+        rows="6"
+        [value]="originalModel.code"
+        (input)="onOriginalInput($any($event.target).value)"></textarea>
+    </div>
+
+    <div class="input-col">
+      <label>Right (modified)</label>
+      <textarea
+        rows="6"
+        [value]="modifiedModel.code"
+        (input)="onModifiedInput($any($event.target).value)"></textarea>
+    </div>
+
+    <div class="actions">
+      <button (click)="setOriginalText('')">Clear Left</button>
+      <button (click)="setModifiedText('')">Clear Right</button>
+      <button (click)="applyModelsToEditor()">Force update</button>
+    </div>
+  </div>
+
+  <!-- ngx-monaco-diff-editor wrapper (single widget showing two panes) -->
+  <ngx-monaco-diff-editor
+    #diffEditor
+    [options]="diffOptions"
+    [originalModel]="originalModel"
+    [modifiedModel]="modifiedModel"
+    style="height: calc(100vh - 240px); display:block;">
+  </ngx-monaco-diff-editor>
+</div>
