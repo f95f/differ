@@ -73,11 +73,11 @@ export class Differ {
 
   // convenience API to inject text programmatically
   setOriginalText(text: string) {
-    this.originalModel = { ...this.originalModel, code: text };
+    this.originalModel = { ...this.originalModel, code: text, length: text.length };
     this.update$.next();
   }
   setModifiedText(text: string) {
-    this.modifiedModel = { ...this.modifiedModel, code: text };
+    this.modifiedModel = { ...this.modifiedModel, code: text, length: text.length };
     this.update$.next();
   }
 
@@ -101,7 +101,6 @@ export class Differ {
         // nothing else required
       }
 
-      // Example: get diff info (line changes)
       // get the internal Monaco diff editor instance
       const monacoDiffEditor = diffComp.getDiffEditor ? diffComp.getDiffEditor() : diffComp._editor;
       if (monacoDiffEditor) {
@@ -110,9 +109,26 @@ export class Differ {
         console.log('lineChanges/hunks:', lineChanges);
       }
 
-      // Example: add a decoration to the modified editor (highlight 1st line)
       if (monacoDiffEditor && monacoDiffEditor.getModifiedEditor) {
+        const originalEditor = monacoDiffEditor.getOriginalEditor();
+        if (originalEditor) {
+          originalEditor.onDidChangeModelContent(() => {
+            const value = originalEditor.getModel().getValue();
+            this.originalModel.length = value.length;
+            this.originalModel.code = value;
+            // trigger change detection if needed
+            this.ngZone.run(() => {});
+          });
+      }
         const modifiedEditor = monacoDiffEditor.getModifiedEditor();
+        if (modifiedEditor) {
+          modifiedEditor.onDidChangeModelContent(() => {
+            const value = modifiedEditor.getModel().getValue();
+            this.modifiedModel.length = value.length;
+            this.modifiedModel.code = value;
+            this.ngZone.run(() => {});
+          });
+        }
         // clear previous decorations stored in a property
         (modifiedEditor as any).__myDecos = (modifiedEditor as any).__myDecos || [];
         (modifiedEditor as any).__myDecos = modifiedEditor.deltaDecorations(
@@ -120,7 +136,7 @@ export class Differ {
           [
             {
               range: new (window as any).monaco.Range(1, 1, 1, 120),
-              options: { isWholeLine: true, className: 'my-custom-line' }
+              options: { isWholeLine: true }
             }
           ]
         );
@@ -130,7 +146,6 @@ export class Differ {
     }
   }
 
-  // Optional: programmatic reading of merged value (if you let users edit both sides)
   getModifiedText(): string {
     try {
       const diffComp = this.diffEditorComponent;
