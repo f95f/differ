@@ -30,6 +30,8 @@ export class Differ {
   private update$ = new Subject<void>();
   private destroy$ = new Subject<void>();
 
+  isClearMenuExpanded = false;
+
   originalModel: IDiffEditorModel = {
     language: 'plaintext',
     code: '',
@@ -81,6 +83,16 @@ export class Differ {
     this.update$.next();
   }
 
+  setOriginalTextFromClipboard(text: string) {
+    navigator.clipboard.readText().then(text => {
+      this.setOriginalText(text);
+    });
+  }
+  setModifiedTextFromClipboard(text: string) {
+    navigator.clipboard.readText().then(text => {
+      this.setModifiedText(text);
+    });
+  }
 
   // sync the wrapper-bound models into the actual Monaco diff editor
   applyModelsToEditor() {
@@ -156,7 +168,10 @@ export class Differ {
       return this.modifiedModel.code;
     }
   }
-
+    
+  toggleClearMenu() {
+    this.isClearMenuExpanded = !this.isClearMenuExpanded;
+  }
 
   ngOnDestroy() {
     this.update$.complete();

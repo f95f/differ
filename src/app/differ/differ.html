@@ -23,7 +23,32 @@
     </div>
   </div> -->
 
-  <div class="tools debug">
+  <div class="topbar">
+        <div class="clear-button-wrapper"
+             [class.expanded]="isClearMenuExpanded"
+             (mouseenter)="toggleClearMenu()"
+             (mouseleave)="toggleClearMenu()">
+          <div class="clear-button-menu-trigger">
+            <span class="material-symbols-outlined light">clear_all</span>
+            <span class="button-description">Clear...</span>
+          </div>
+          <button (click)="setOriginalText(''); setModifiedText('')">
+              <span class="button-description">All</span>
+          </button>
+          <button (click)="setOriginalText('')">
+              <span class="button-description">Left</span>
+          </button>
+          <button (click)="setModifiedText('')">
+              <span class="button-description">Right</span>
+          </button>
+        </div>
+        <!-- <button (click)="setModifiedText('')">
+            <span class="material-symbols-outlined light">settings</span>
+            <span class="button-description">Settings</span>
+        </button> -->
+  </div>
+
+  <div class="tools">
     <div class="left">
         <h2>
             <span class="material-symbols-outlined light">text_compare</span>
@@ -32,9 +57,9 @@
         <span class="length light">
             {{ originalModel.length }} characters
         </span>
-        <button (click)="setOriginalText('')">
-            <span class="material-symbols-outlined light">clear_all</span>
-            <span class="button-description">Clear this side</span>
+        <button (click)="setOriginalTextFromClipboard('')">
+            <span class="material-symbols-outlined light">download</span>
+            <span class="button-description">Paste in this side</span>
         </button>
     </div>
     <div class="right">
@@ -45,9 +70,9 @@
         <span class="length light">
             {{ modifiedModel.length }} characters
         </span>
-        <button (click)="setModifiedText('')">
-            <span class="material-symbols-outlined light">clear_all</span>
-            <span class="button-description">Clear this side</span>
+        <button (click)="setModifiedTextFromClipboard('')">
+            <span class="material-symbols-outlined light">download</span>
+            <span class="button-description">Paste in this side</span>
         </button>
     </div>
   </div>
