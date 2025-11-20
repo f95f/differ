@@ -1,7 +1,8 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, inject, NgZone, ViewChild } from '@angular/core';
+import { ClickOutsideDirective } from '../shared/click-outside.directive';
 import { FormsModule } from '@angular/forms';
-import { DiffEditorModel, MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { debounceTime, Subject } from 'rxjs';
 
 interface IDiffEditorModel {
@@ -15,6 +16,7 @@ interface IDiffEditorModel {
   imports: [
     MonacoEditorModule,
     FormsModule,
+    ClickOutsideDirective,
   ],
   templateUrl: './differ.html',
   styleUrl: './differ.scss'
@@ -24,13 +26,20 @@ export class Differ {
   @ViewChild('diffEditor') 
   diffEditorComponent: any;
 
-  private ngZone = inject(NgZone);
-  private client = inject(HttpClient);
+  private readonly ngZone = inject(NgZone);
+  private readonly client = inject(HttpClient);
 
-  private update$ = new Subject<void>();
-  private destroy$ = new Subject<void>();
+  private readonly update$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   isClearMenuExpanded = false;
+  isEditingOriginalTitle = false;
+  isEditingModifiedTitle = false;
+  isModifiedTitleHovered = false;
+  isOriginalTitleHovered = false;
+
+  originalTitle = 'Sample A';
+  modifiedTitle = 'Sample B';
 
   originalModel: IDiffEditorModel = {
     language: 'plaintext',
@@ -48,12 +57,8 @@ export class Differ {
     renderSideBySide: true,
     automaticLayout: true,
     minimap: { enabled: false },
-    originalEditable: true, // make left editable if you want: true
+    originalEditable: true,
     renderIndicators: true,
-    // new: hide unchanged regions (Monaco option) — useful for long configs
-    // note: key supported by Monaco: 'hideUnchangedRegions: { enabled: true }' 
-    // (some wrappers accept it directly in options)
-    // hideUnchangedRegions: { enabled: false }
   };
 
 
@@ -171,6 +176,32 @@ export class Differ {
     
   toggleClearMenu() {
     this.isClearMenuExpanded = !this.isClearMenuExpanded;
+  }
+
+  toggleEditingOriginalTitle() {
+    this.isEditingOriginalTitle = !this.isEditingOriginalTitle;
+  }
+
+  toggleEditingModifiedTitle() {
+    this.isEditingModifiedTitle = !this.isEditingModifiedTitle;
+  }
+
+  onOriginalTitleClickOutside() {
+    this.isEditingOriginalTitle = false;
+    this.toggleOriginalTitleHovered(false);
+  }
+
+  onModifiedTitleClickOutside() {
+    this.isEditingModifiedTitle = false;
+    this.toggleModifiedTitleHovered(false);
+  }
+
+  toggleOriginalTitleHovered(isHovered: boolean) {
+    this.isOriginalTitleHovered = isHovered;
+  }
+
+  toggleModifiedTitleHovered(isHovered: boolean) {
+    this.isModifiedTitleHovered = isHovered;
   }
 
   ngOnDestroy() {

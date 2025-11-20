@@ -1,27 +1,4 @@
 <div class="diff-page">
-  <!-- <div class="inputs-row">
-    <div class="input-col">
-      <label>Left (original)</label>
-      <textarea
-        rows="6"
-        [value]="originalModel.code"
-        (input)="onOriginalInput($any($event.target).value)"></textarea>
-    </div>
-
-    <div class="input-col">
-      <label>Right (modified)</label>
-      <textarea
-        rows="6"
-        [value]="modifiedModel.code"
-        (input)="onModifiedInput($any($event.target).value)"></textarea>
-    </div>
-
-    <div class="actions">
-      <button (click)="setOriginalText('')">Clear Left</button>
-      <button (click)="setModifiedText('')">Clear Right</button>
-      <button (click)="applyModelsToEditor()">Force update</button>
-    </div>
-  </div> -->
 
   <div class="topbar">
         <div class="clear-button-wrapper"
@@ -52,7 +29,20 @@
     <div class="left">
         <h2>
             <span class="material-symbols-outlined light">text_compare</span>
-            Sample A
+            @if(isEditingOriginalTitle) {
+              <input type="text"
+                     [(ngModel)]="originalTitle"
+                     clickOutside
+                     (clickOutside)="onOriginalTitleClickOutside()"/>
+            } 
+            @else {
+              <span (click)="toggleEditingOriginalTitle()"
+                    (mouseenter)="toggleOriginalTitleHovered(true)"
+                    (mouseleave)="toggleOriginalTitleHovered(false)">
+                {{ originalTitle }}
+                </span>
+              @if(isOriginalTitleHovered) { <span class="material-symbols-outlined light">edit</span> }
+            }
         </h2>
         <span class="length light">
             {{ originalModel.length }} characters
@@ -65,7 +55,20 @@
     <div class="right">
         <h2>
             <span class="material-symbols-outlined light">text_compare</span>
-            Sample B
+            @if(isEditingModifiedTitle) {
+              <input type="text" 
+                     [(ngModel)]="modifiedTitle"
+                     clickOutside
+                     (clickOutside)="onModifiedTitleClickOutside()"/>
+            } 
+            @else {
+              <span (click)="toggleEditingModifiedTitle()"
+                    (mouseenter)="toggleModifiedTitleHovered(true)"
+                    (mouseleave)="toggleModifiedTitleHovered(false)">
+                {{ modifiedTitle }}
+              </span>
+              @if(isModifiedTitleHovered) { <span class="material-symbols-outlined light">edit</span> }
+            }
         </h2>
         <span class="length light">
             {{ modifiedModel.length }} characters
