@@ -21,7 +21,7 @@ button.theme-button {
 }
 
 button.format-button {
-    align-self: stretch;
+    font: inherit;
 }
 
 .clear-button-menu-trigger {
@@ -52,13 +52,15 @@ button.format-button {
 .topbar {
     width: 100%;
     display: flex;
+    background-color: var(--editor-background);
     border-bottom: 1px solid var(--base-light);
 }
 
 .tools {
     width: 100%;
     display: flex;
-    border-bottom: 1px solid var(--grey-light);
+    background-color: var(--editor-background);
+    border-bottom: 1px solid var(--base-light);
 
     .left,
     .right {
