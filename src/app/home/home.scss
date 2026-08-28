@@ -1,15 +1,45 @@
 
 h1 {
     font-size: 2em;
+    font-weight: 300;
     color: var(--base);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    span {
+      font-size: 3rem;
+    }
+}
+
+.page-title {
+  width: min(100vw, 1200px);
+  margin: 0 auto;
+  padding: 4rem 5rem 0 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 nav {
   padding: 5rem;
-  width: max(100vw, 800px);
+  width: min(100vw, 1200px);
   margin: 0 auto;
   display: flex;
   gap: 0.5rem;
+}
+
+button.theme-button {
+  background-color: unset;
+  border: unset;
+  color: var(--base);
+  cursor: pointer;
+  display: flex;
+  padding: 0.5rem;
+}
+
+button.theme-button:hover {
+  color: var(--base-dark);
 }
 
 button.tile-button {

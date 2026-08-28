@@ -12,12 +12,26 @@
 
 }
 
+:root[data-theme='dark'] {
+    --base-light: #8ed0ff;
+    --base: #4aa9e9;
+    --base-dark: #1d6f9f;
+
+    --grey-light: #18222d;
+    --grey: #344454;
+    --grey-dark: #a7b7c7;
+    --grey-darker: #edf5ff;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-weight: 300;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body *:not(.monaco-editor, .monaco-editor *) {
     transition: all .2s;
 }
 
@@ -27,6 +41,8 @@ h1, h2 {
 
 body {
     overflow-x: hidden;
+    background: var(--grey-light);
+    color: var(--grey-darker);
 }
 
 .debug {

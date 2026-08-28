@@ -2,7 +2,7 @@
 
   <div class="topbar">
     <div class="home-button-wrapper">
-        <button class="home-button" routerLink="/">
+        <button class="home-button" type="button" routerLink="/">
             <span class="material-symbols-outlined">home_storage_gear</span>
         </button>
     </div>
@@ -14,18 +14,22 @@
         <span class="material-symbols-outlined light">clear_all</span>
         <span class="button-description">Clear...</span>
         </div>
-        <button (click)="setOriginalText(''); setModifiedText('')">
+        <button type="button" (click)="setOriginalText(''); setModifiedText('')">
             <span class="button-description">All</span>
         </button>
-        <button (click)="setOriginalText('')">
+        <button type="button" (click)="setOriginalText('')">
             <span class="button-description">Left</span>
         </button>
-        <button (click)="setModifiedText('')">
+        <button type="button" (click)="setModifiedText('')">
             <span class="button-description">Right</span>
         </button>
     </div>
     
-    <button class="theme-button">
+    <button
+        class="theme-button"
+        type="button"
+        [attr.aria-label]="'Switch to ' + (themeService.theme() === 'light' ? 'dark' : 'light') + ' theme'"
+        (click)="themeService.toggleTheme()">
         <span class="tile-icon material-symbols-outlined">routine</span>  
     </button>
   </div>
@@ -52,7 +56,7 @@
         <span class="length light">
             {{ originalModel.length }} characters
         </span>
-        <button (click)="setOriginalTextFromClipboard('')">
+        <button type="button" (click)="setOriginalTextFromClipboard('')">
             <span class="material-symbols-outlined light">download</span>
             <span class="button-description">Paste in this side</span>
         </button>
@@ -78,7 +82,7 @@
         <span class="length light">
             {{ modifiedModel.length }} characters
         </span>
-        <button (click)="setModifiedTextFromClipboard('')">
+        <button type="button" (click)="setModifiedTextFromClipboard('')">
             <span class="material-symbols-outlined light">download</span>
             <span class="button-description">Paste in this side</span>
         </button>
@@ -89,6 +93,7 @@
     #diffEditor
     [options]="diffOptions"
     [originalModel]="originalModel"
-    [modifiedModel]="modifiedModel">
+    [modifiedModel]="modifiedModel"
+    (onInit)="onDiffEditorInit($event)">
   </ngx-monaco-diff-editor>
 </div>
