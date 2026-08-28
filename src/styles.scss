@@ -6,9 +6,10 @@
     --base-dark: #2980b9;
 
     --grey-light: #f3f3f3;
-    --grey: #bdc3c7;
+    --grey: #edf5ff;
     --grey-dark: #7f8c8d;
     --grey-darker: #314860;
+    --editor-background: #ffffff;
 
 }
 
@@ -21,6 +22,7 @@
     --grey: #344454;
     --grey-dark: #a7b7c7;
     --grey-darker: #edf5ff;
+    --editor-background: #18222d;
 }
 
 * {
@@ -48,4 +50,3 @@ body {
 .debug {
     outline: 1px dashed lime;
 }
-

@@ -1,0 +1,14 @@
+{
+  "tool": "Differ",
+  "mode": "json",
+  "features": [
+    "paste",
+    "copy",
+    "format"
+  ],
+  "sample": {
+    "minifiedOnLeft": true,
+    "formattedOnRight": true,
+    "indentation": 2
+  }
+}

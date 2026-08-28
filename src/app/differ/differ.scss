@@ -50,6 +50,7 @@ button.theme-button {
 .topbar {
     width: 100%;
     display: flex;
+    background-color: var(--editor-background);
     border-bottom: 1px solid var(--base-light);
 
 }
@@ -57,6 +58,7 @@ button.theme-button {
 .tools {
     width: 100%;
     display: flex;
+    background-color: var(--editor-background);
     border-bottom: 1px solid var(--grey-light);
     
     .left, .right {

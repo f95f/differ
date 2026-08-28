@@ -1,1 +1,110 @@
-<p>indenter works!</p>
+<div class="indenter-page">
+  <div class="topbar">
+    <div class="home-button-wrapper">
+      <button class="home-button" type="button" routerLink="/">
+        <span class="material-symbols-outlined">home_storage_gear</span>
+      </button>
+    </div>
+
+    <div
+      class="clear-button-wrapper"
+      [class.expanded]="isClearMenuExpanded"
+      (mouseenter)="setClearMenuExpanded(true)"
+      (mouseleave)="setClearMenuExpanded(false)">
+      <div class="clear-button-menu-trigger">
+        <span class="material-symbols-outlined light">clear_all</span>
+        <span class="button-description">Clear...</span>
+      </div>
+      <button type="button" (click)="clearAll()">
+        <span class="button-description">All</span>
+      </button>
+      <button type="button" (click)="clearLeft()">
+        <span class="button-description">Left</span>
+      </button>
+      <button type="button" (click)="clearRight()">
+        <span class="button-description">Right</span>
+      </button>
+    </div>
+
+    <button class="format-button" type="button" (click)="format()">
+      <span class="material-symbols-outlined light">data_object</span>
+      <span class="button-description">Format</span>
+    </button>
+
+    <button
+      class="theme-button"
+      type="button"
+      [attr.aria-label]="'Switch to ' + (themeService.theme() === 'light' ? 'dark' : 'light') + ' theme'"
+      (click)="themeService.toggleTheme()">
+      <span class="tile-icon material-symbols-outlined">routine</span>
+    </button>
+  </div>
+
+  <div class="tools">
+    <div class="left">
+      <div class="side-summary">
+        <h2>
+          <span class="material-symbols-outlined light">compress</span>
+          Minified
+        </h2>
+        <span class="length light">{{ leftLength }} characters</span>
+        @if(leftError) {
+          <span class="error-message">{{ leftError }}</span>
+        }
+      </div>
+
+      <div class="side-actions">
+        <button type="button" (click)="pasteInSide('left')">
+          <span class="material-symbols-outlined light">download</span>
+          <span class="button-description">Paste in this side</span>
+        </button>
+        <button type="button" (click)="copySide('left')">
+          <span class="material-symbols-outlined light">content_copy</span>
+          <span class="button-description">Copy this side</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="side-summary">
+        <h2>
+          <span class="material-symbols-outlined light">format_indent_increase</span>
+          Formatted
+        </h2>
+        <span class="length light">{{ rightLength }} characters</span>
+        @if(rightError) {
+          <span class="error-message">{{ rightError }}</span>
+        }
+      </div>
+
+      <div class="side-actions">
+        <button type="button" (click)="pasteInSide('right')">
+          <span class="material-symbols-outlined light">download</span>
+          <span class="button-description">Paste in this side</span>
+        </button>
+        <button type="button" (click)="copySide('right')">
+          <span class="material-symbols-outlined light">content_copy</span>
+          <span class="button-description">Copy this side</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="editors">
+    <ngx-monaco-editor
+      class="json-editor"
+      [options]="editorOptions"
+      [(ngModel)]="leftText"
+      (ngModelChange)="onSideInput('left')"
+      (onInit)="onLeftEditorInit($event)">
+    </ngx-monaco-editor>
+
+    <ngx-monaco-editor
+      class="json-editor"
+      [options]="editorOptions"
+      [(ngModel)]="rightText"
+      (ngModelChange)="onSideInput('right')"
+      (onInit)="onRightEditorInit($event)">
+    </ngx-monaco-editor>
+  </div>
+</div>

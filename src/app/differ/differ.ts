@@ -219,7 +219,7 @@ export class Differ {
     }
 
     const styles = getComputedStyle(document.documentElement);
-    const editorBackground = this.toMonacoColor(styles.getPropertyValue('--grey-light'));
+    const editorBackground = this.toMonacoColor(styles.getPropertyValue('--editor-background'));
     const foreground = this.toMonacoColor(styles.getPropertyValue('--grey-darker'));
     const lineNumber = this.toMonacoColor(styles.getPropertyValue('--grey-dark'));
     const selectionBackground = this.toMonacoColor(styles.getPropertyValue('--grey'));
