@@ -1,0 +1,48 @@
+
+h1 {
+    font-size: 2em;
+    color: var(--base);
+}
+
+nav {
+  padding: 5rem;
+  width: max(100vw, 800px);
+  margin: 0 auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+button.tile-button {
+  background-color: unset;
+  border: 1px solid var(--base-light);
+  box-shadow: 0 0 5px var(--grey);
+  width: 200px;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--base-light);
+  cursor: pointer;
+ 
+  .tile-icon {
+    font-size: 2rem;
+  }
+
+  .tile-description {
+    font-size: 0.8rem;
+  }
+}
+
+button.tile-button:hover {
+  background-color: var(--base-light);
+  box-shadow: 0 0 10px var(--base-dark);
+  color: var(--grey-light);
+}
+
+button.tile-button:active {
+  background-color: var(--base);
+  box-shadow: 0 0 10px var(--base-dark);
+  color: var(--grey-light);
+}

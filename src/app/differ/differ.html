@@ -1,28 +1,33 @@
 <div class="diff-page">
 
   <div class="topbar">
-        <div class="clear-button-wrapper"
-             [class.expanded]="isClearMenuExpanded"
-             (mouseenter)="toggleClearMenu()"
-             (mouseleave)="toggleClearMenu()">
-          <div class="clear-button-menu-trigger">
-            <span class="material-symbols-outlined light">clear_all</span>
-            <span class="button-description">Clear...</span>
-          </div>
-          <button (click)="setOriginalText(''); setModifiedText('')">
-              <span class="button-description">All</span>
-          </button>
-          <button (click)="setOriginalText('')">
-              <span class="button-description">Left</span>
-          </button>
-          <button (click)="setModifiedText('')">
-              <span class="button-description">Right</span>
-          </button>
+    <div class="home-button-wrapper">
+        <button class="home-button" routerLink="/">
+            <span class="material-symbols-outlined">home_storage_gear</span>
+        </button>
+    </div>
+    <div class="clear-button-wrapper"
+            [class.expanded]="isClearMenuExpanded"
+            (mouseenter)="toggleClearMenu()"
+            (mouseleave)="toggleClearMenu()">
+        <div class="clear-button-menu-trigger">
+        <span class="material-symbols-outlined light">clear_all</span>
+        <span class="button-description">Clear...</span>
         </div>
-        <!-- <button (click)="setModifiedText('')">
-            <span class="material-symbols-outlined light">settings</span>
-            <span class="button-description">Settings</span>
-        </button> -->
+        <button (click)="setOriginalText(''); setModifiedText('')">
+            <span class="button-description">All</span>
+        </button>
+        <button (click)="setOriginalText('')">
+            <span class="button-description">Left</span>
+        </button>
+        <button (click)="setModifiedText('')">
+            <span class="button-description">Right</span>
+        </button>
+    </div>
+    
+    <button class="theme-button">
+        <span class="tile-icon material-symbols-outlined">routine</span>  
+    </button>
   </div>
 
   <div class="tools">
